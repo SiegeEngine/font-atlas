@@ -46,7 +46,7 @@ pub struct CharInfo {
 #[derive(Debug)]
 #[cfg_attr(feature = "with-serde", derive(Serialize, Deserialize))]
 pub struct Atlas {
-    char_info: HashMap<char, CharInfo>
+    pub char_info: HashMap<char, CharInfo>
 }
 
 /// A rectangular 2d-array of u8 where
