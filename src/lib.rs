@@ -1,5 +1,8 @@
 extern crate rusttype;
 extern crate void;
+#[macro_use]
+extern crate serde_derive;
+extern crate serde;
 
 use std::io::Result as IoResult;
 use std::path::Path;

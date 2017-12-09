@@ -1,5 +1,5 @@
 /// A rectangle
-#[derive(Debug, Hash, Eq, PartialEq, Copy, Clone)]
+#[derive(Debug, Hash, Eq, PartialEq, Copy, Clone, Serialize, Deserialize)]
 pub struct Rect {
     pub x: u32,
     pub y: u32,
