@@ -21,7 +21,8 @@ impl ::std::fmt::Debug for Font {
 
 /// Information about a character from a font rendered
 /// at a specific scale.
-#[derive(Debug, Copy, Clone, Serialize, Deserialize)]
+#[derive(Debug, Copy, Clone)]
+#[cfg_attr(feature = "with-serde", derive(Serialize, Deserialize))]
 pub struct CharInfo {
     /// The character in question
     pub chr: char,
@@ -42,7 +43,8 @@ pub struct CharInfo {
 }
 
 /// A mapping from chars to CharInfo.
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
+#[cfg_attr(feature = "with-serde", derive(Serialize, Deserialize))]
 pub struct Atlas {
     char_info: HashMap<char, CharInfo>
 }
@@ -50,7 +52,8 @@ pub struct Atlas {
 /// A rectangular 2d-array of u8 where
 /// the values 0 through 255 represent
 /// shades of grey.
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
+#[cfg_attr(feature = "with-serde", derive(Serialize, Deserialize))]
 pub struct Bitmap {
     bytes: Vec<u8>,
     width: usize

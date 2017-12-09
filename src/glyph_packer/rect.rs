@@ -1,5 +1,6 @@
 /// A rectangle
-#[derive(Debug, Hash, Eq, PartialEq, Copy, Clone, Serialize, Deserialize)]
+#[derive(Debug, Hash, Eq, PartialEq, Copy, Clone)]
+#[cfg_attr(feature = "with-serde", derive(Serialize, Deserialize))]
 pub struct Rect {
     pub x: u32,
     pub y: u32,

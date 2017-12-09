@@ -1,7 +1,9 @@
 extern crate rusttype;
 extern crate void;
+#[cfg(feature = "with-serde")]
 #[macro_use]
 extern crate serde_derive;
+#[cfg(feature = "with-serde")]
 extern crate serde;
 
 use std::io::Result as IoResult;
