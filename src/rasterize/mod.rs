@@ -46,6 +46,7 @@ pub struct CharInfo {
 #[derive(Debug)]
 #[cfg_attr(feature = "with-serde", derive(Serialize, Deserialize))]
 pub struct Atlas {
+    /// Mapping from chars to CharInfo
     pub char_info: HashMap<char, CharInfo>
 }
 
