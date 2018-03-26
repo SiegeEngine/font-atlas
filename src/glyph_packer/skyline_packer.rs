@@ -173,21 +173,21 @@ impl<B: Buffer2d> Packer for SkylinePacker<B> {
 
     fn pack<O: Buffer2d<Pixel=B::Pixel>>(&mut self, buf: &O) -> Option<Rect> {
         let (mut width, mut height) = buf.dimensions();
-        width += self.margin;
-        height += self.margin;
+        width += self.margin * 2;
+        height += self.margin * 2;
 
         if let Some((i, mut rect)) = self.find_skyline(width, height) {
             if width == rect.w {
-                self.buf.patch(rect.x, rect.y, buf);
+                self.buf.patch(rect.x + self.margin, rect.y + self.margin, buf);
             } else {
-                self.buf.patch_rotated(rect.x, rect.y, buf);
+                self.buf.patch_rotated(rect.x + self.margin, rect.y + self.margin, buf);
             }
 
             self.split(i, &rect);
             self.merge();
 
-            rect.w -= self.margin;
-            rect.h -= self.margin;
+            rect.w -= self.margin * 2;
+            rect.h -= self.margin * 2;
             Some(rect)
         } else { None }
     }

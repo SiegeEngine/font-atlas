@@ -184,7 +184,7 @@ impl Font {
 
     /// Creates an atlas for a set of characters rendered at a given scale.
     ///
-    /// `margin` is the distance between characters in pixels.
+    /// `margin` is the distance between characters (and edges) in pixels.
     /// `width` and `height` denote the starting size of the bitmap.
     ///
     /// The resulting bitmap may be larger than width x height in order to
