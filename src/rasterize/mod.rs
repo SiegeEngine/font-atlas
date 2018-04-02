@@ -28,7 +28,7 @@ pub struct CharInfo {
     pub chr: char,
     /// The scale that the character was rendered at
     pub scale: f32,
-    /// The size of the character
+    /// The box bounding the character in the rasterized image
     pub bounding_box: glyph_packer::Rect,
     /// The amount of (x, y) that the pen should move
     /// after drawing the character
@@ -155,6 +155,10 @@ impl Font {
         };
         let glyph = glyph.scaled(rusttype::Scale::uniform(scale));
         let h_metrics = glyph.h_metrics();
+        let xbb = match glyph.exact_bounding_box() {
+            Some(a) => a,
+            None => return None
+        };
         let glyph = glyph.positioned(rusttype::Point { x: 0.0, y:0.0 });
         let bb = match glyph.pixel_bounding_box() {
             Some(a) => a,
@@ -176,7 +180,7 @@ impl Font {
             },
             post_draw_advance: (h_metrics.advance_width, 0.0),
             pre_draw_advance: (h_metrics.left_side_bearing, 0.0),
-            height_offset: glyph.position().y,
+            height_offset: xbb.max.y + glyph.position().y,
         };
 
         Some((info, out))
