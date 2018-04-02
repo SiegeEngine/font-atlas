@@ -56,8 +56,10 @@ pub struct Atlas {
 #[derive(Debug)]
 #[cfg_attr(feature = "with-serde", derive(Serialize, Deserialize))]
 pub struct Bitmap {
-    bytes: Vec<u8>,
-    width: usize
+    /// One byte per pixel
+    pub bytes: Vec<u8>,
+    /// Width of the bitmap, in pixels
+    pub width: usize
 }
 
 impl Bitmap {
