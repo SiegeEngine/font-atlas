@@ -151,10 +151,7 @@ impl Font {
     /// If the character isn't handled by the font, None is returned.
     pub fn render_char(&self, chr: char, scale: f32) -> Option<(CharInfo, Bitmap)> {
         use glyph_packer::Buffer2d;
-        let glyph = match self.font.glyph(chr) {
-            Some(a) => a,
-            None => return None,
-        };
+        let glyph = self.font.glyph(chr);
         let glyph = glyph.scaled(rusttype::Scale::uniform(scale));
         let h_metrics = glyph.h_metrics();
         let xbb = match glyph.exact_bounding_box() {

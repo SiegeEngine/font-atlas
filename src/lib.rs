@@ -37,6 +37,5 @@ pub fn load_font<P: AsRef<Path>>(path: P) -> IoResult<rasterize::Font> {
 
 /// Loads a font from bytes in memory.
 pub fn load_font_from_bytes(bytes: Vec<u8>) -> rasterize::Font {
-    rasterize::Font::new(rusttype::FontCollection::from_bytes(bytes).into_font().unwrap())
+    rasterize::Font::new(rusttype::FontCollection::from_bytes(bytes).unwrap().into_font().unwrap())
 }
-
