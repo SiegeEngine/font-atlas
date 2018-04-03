@@ -218,6 +218,7 @@ impl Font {
     }
 
     /// Creates an atlas for all characters/glyphs in a font rendered at a given scale.
+    /// that fall within the ranges provided.
     ///
     /// `margin` is the distance between characters (and edges) in pixels.
     /// `width` and `height` denote the starting size of the bitmap.
@@ -226,14 +227,22 @@ impl Font {
     /// fit all of the characters.
     ///
     /// This checks all codepoints up to 0x10FFFF
-    pub fn make_atlas_all(&self, scale: f32, margin: u32, width: usize, height: usize)
+    pub fn make_atlas_all(&self, scale: f32, margin: u32, width: usize, height: usize,
+                          codepoint_ranges: &[(u32,u32)])
                           -> (Atlas, Bitmap, f32)
     {
         let mut atlas = Atlas { char_info: HashMap::new() };
         let mut packer = glyph_packer::SkylinePacker::new(Bitmap::new(width, height));
         packer.set_margin(margin);
 
-        for c in self.font.codepoint_iter().map(|c| ::std::char::from_u32(c).unwrap())
+        for c in self.font.codepoint_iter()
+            .filter(|u| {
+                for &(ref start, ref end) in codepoint_ranges.iter() {
+                    if u>=start && u<end { return true; }
+                }
+                false
+            })
+            .map(|c| ::std::char::from_u32(c).unwrap())
         {
             if let Some((mut info, rendered)) = self.render_char(c, scale) {
                 let r: glyph_packer::Rect = packer.pack_resize(&rendered, |(ow, oh)| (ow * 2, oh * 2));
