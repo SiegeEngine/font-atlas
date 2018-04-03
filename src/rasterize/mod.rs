@@ -219,6 +219,46 @@ impl Font {
         let line_height = v_metrics.ascent + v_metrics.descent + v_metrics.line_gap;
         (atlas, packer.into_buf(), line_height)
     }
+
+    /// Creates an atlas for all characters/glyphs in a font rendered at a given scale.
+    ///
+    /// `margin` is the distance between characters (and edges) in pixels.
+    /// `width` and `height` denote the starting size of the bitmap.
+    ///
+    /// The resulting bitmap may be larger than width x height in order to
+    /// fit all of the characters.
+    ///
+    /// This checks all codepoints up to 0x10FFFF
+    pub fn make_atlas_all(&self, scale: f32, margin: u32, width: usize, height: usize)
+                          -> (Atlas, Bitmap, f32)
+    {
+        let mut atlas = Atlas { char_info: HashMap::new() };
+        let mut packer = glyph_packer::SkylinePacker::new(Bitmap::new(width, height));
+        packer.set_margin(margin);
+
+        for codepoint in 0..0x10ffff_u32 {
+            let c: char = match ::std::char::from_u32(codepoint) {
+                None => continue,
+                Some(c) => c,
+            };
+            if let Some((mut info, rendered)) = self.render_char(c, scale) {
+                let r: glyph_packer::Rect = packer.pack_resize(&rendered, |(ow, oh)| (ow * 2, oh * 2));
+                info.bounding_box = r;
+                atlas.char_info.insert(c, info);
+            } else if c == ' ' {
+                let (mut info, _) = self.render_char('-', scale).unwrap();
+                let empty_bitmap = Bitmap::new(1, 1);
+                let r = packer.pack_resize(&empty_bitmap, |(ow, oh)| (ow * 2, oh * 2));
+                info.bounding_box = r;
+                atlas.char_info.insert(c, info);
+            } else {
+                continue; // Skip unrenderable characters
+            }
+        }
+        let v_metrics = self.font.v_metrics(Scale::uniform(scale));
+        let line_height = v_metrics.ascent + v_metrics.descent + v_metrics.line_gap;
+        (atlas, packer.into_buf(), line_height)
+    }
 }
 
 impl Atlas {
