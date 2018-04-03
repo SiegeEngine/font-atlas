@@ -212,7 +212,7 @@ impl Font {
                 info.bounding_box = r;
                 atlas.char_info.insert(c, info);
             } else {
-                panic!("can not renderer char {}", c);
+                continue; // Skip unrenderable characters
             }
         }
         let v_metrics = self.font.v_metrics(Scale::uniform(scale));
