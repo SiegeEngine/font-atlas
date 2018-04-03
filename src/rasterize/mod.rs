@@ -233,11 +233,8 @@ impl Font {
         let mut packer = glyph_packer::SkylinePacker::new(Bitmap::new(width, height));
         packer.set_margin(margin);
 
-        for codepoint in 0..0x10ffff_u32 {
-            let c: char = match ::std::char::from_u32(codepoint) {
-                None => continue,
-                Some(c) => c,
-            };
+        for c in self.font.codepoint_iter().map(|c| ::std::char::from_u32(c).unwrap())
+        {
             if let Some((mut info, rendered)) = self.render_char(c, scale) {
                 let r: glyph_packer::Rect = packer.pack_resize(&rendered, |(ow, oh)| (ow * 2, oh * 2));
                 info.bounding_box = r;
