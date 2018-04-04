@@ -213,7 +213,7 @@ impl Font {
             }
         }
         let v_metrics = self.font.v_metrics(Scale::uniform(scale));
-        let line_height = v_metrics.ascent + v_metrics.descent + v_metrics.line_gap;
+        let line_height = v_metrics.ascent + (-v_metrics.descent) + v_metrics.line_gap;
         (atlas, packer.into_buf(), line_height)
     }
 
@@ -257,7 +257,7 @@ impl Font {
             }
         }
         let v_metrics = self.font.v_metrics(Scale::uniform(scale));
-        let line_height = v_metrics.ascent + v_metrics.descent + v_metrics.line_gap;
+        let line_height = v_metrics.ascent + (-v_metrics.descent) + v_metrics.line_gap;
         (atlas, packer.into_buf(), line_height)
     }
 }
