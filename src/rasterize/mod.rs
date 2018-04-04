@@ -225,8 +225,6 @@ impl Font {
     ///
     /// The resulting bitmap may be larger than width x height in order to
     /// fit all of the characters.
-    ///
-    /// This checks all codepoints up to 0x10FFFF
     pub fn make_atlas_all(&self, scale: f32, margin: u32, width: usize, height: usize,
                           codepoint_ranges: &[(u32,u32)])
                           -> (Atlas, Bitmap, f32)
