@@ -176,7 +176,7 @@ impl<B: Buffer2d> Packer for SkylinePacker<B> {
         width += self.margin * 2;
         height += self.margin * 2;
 
-        if let Some((i, rect)) = self.find_skyline(width, height) {
+        if let Some((i, mut rect)) = self.find_skyline(width, height) {
             if width == rect.w {
                 self.buf.patch(rect.x + self.margin, rect.y + self.margin, buf);
             } else {
@@ -185,6 +185,12 @@ impl<B: Buffer2d> Packer for SkylinePacker<B> {
 
             self.split(i, &rect);
             self.merge();
+
+            // get inner rect (without margin)
+            rect.x += self.margin;
+            rect.y += self.margin;
+            rect.w -= self.margin*2;
+            rect.h -= self.margin*2;
 
             Some(rect)
         } else { None }
