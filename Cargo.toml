@@ -10,7 +10,7 @@ default = [ ]
 with-serde = [ "serde", "serde_derive" ]
 
 [dependencies]
-rusttype = { git = "https://github.com/mikedilger/rusttype" }
+rusttype = { git = "https://github.com/SiegeEngine/rusttype" }
 void = "1.0.*"
 serde_derive = { version = "1.0", optional = true }
 serde = { version = "1.0", optional = true }
